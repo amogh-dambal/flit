@@ -7,6 +7,14 @@
 
 extern int errno;
 
+/**
+ * @brief Returns the size of the file 
+ * pointed to by FP. On error, returns -1.
+ * 
+ * @param fp : pointer to the file 
+ * @return long : size of the file in bytes
+ */
+
 long fsize(FILE* fp) {
     long sz = -1;
     if (!fseek(fp, 0L, SEEK_END)) {
@@ -32,7 +40,6 @@ int main(int argc, char** argv) {
 
     printf("successfully opened file with name %s\n", fname);
 
-    /* get the size of the file */
     long sz = fsize(fp);
     if (sz == -1) {
         fprintf(stderr, "File size operation failed.\n");
