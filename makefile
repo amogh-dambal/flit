@@ -7,6 +7,7 @@ BUILDDIR := ./build
 SOURCEDIR := ./src
 
 NAME := flit
+TESTNAME := flittest
 
 build:
 	$(CC) $(CFLAGS) main.c -o $(NAME)
@@ -16,5 +17,5 @@ clean:
 	rm -f *.gcda
 	rm -f *.gcno
 	rm -f *.gcov
-	rm -f flit
-	rm -f test
+	rm -f $(NAME)
+	rm -f $(TESTNAME)
