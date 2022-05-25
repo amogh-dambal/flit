@@ -4,7 +4,8 @@
 #include <string.h>
 #include <argp.h>
 
-#include "inc/input.h"
+#include "../inc/input.h"
+#include "../inc/split.h"
 
 extern int errno;
 
@@ -25,7 +26,6 @@ long fsize(FILE* fp) {
     return sz;
 }
 
-
 int main(int argc, char** argv) {
     args_t args;
     if (!parse_args(argc, argv, &args)) {
@@ -37,21 +37,17 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    FILE* fp = fopen(args.fname, "r");
-    if (!fp) {
-        fprintf(stderr, "Unable to open file. Errno: %d\n Error: %s\n", errno, strerror(errno));
-        exit(EXIT_FAILURE);
+    split_t s;
+    if (!init_splitter(&args, &s)) {
+        fprintf(stderr, "Error in initializing file splitter.\n");
+        return EXIT_FAILURE;
     }
 
-    printf("successfully opened file with name %s\n", args.fname);
-
-    long sz = fsize(fp);
-    if (sz == -1) {
-        fprintf(stderr, "File size operation failed.\n");
-        exit(EXIT_FAILURE);
+    if (!split_file(&s)) {
+        fprintf(stderr, "Error in splitting the file.\n");
+        return EXIT_FAILURE;
     }
-    printf("size of file: %ld\n", sz);
 
-    fclose(fp);
-    exit(EXIT_SUCCESS);
+    destroy_splitter(&s);
+    return 0;
 }
