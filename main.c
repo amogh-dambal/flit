@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-
-#include "error.h"
+#include <argp.h>
 
 extern int errno;
 
