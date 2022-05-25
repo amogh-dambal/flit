@@ -1,21 +1,45 @@
-IDIR :=./include
-CC := gcc
-CFLAGS := --coverage --pedantic -fsanitize=address --std=c17 -O3 -I$(IDIR) -Wall -Wextra
-GCOV := gcov
+# ------------------------------------------------
+# flit Project Makefile
+# author: amogh dambal
+# email: amoghdambal@utexas.edu
+# sourced by makefile from: https://stackoverflow.com/questions/7004702/how-can-i-create-a-makefile-for-c-projects-with-src-obj-and-bin-subdirectories
+# ------------------------------------------------
 
-BUILDDIR := ./build
-SOURCEDIR := ./src
+# project name (generate executable with this name)
+TARGET   = flit
+CC       = gcc
+# compiling flags here
+CFLAGS   = -std=c17 -Wall -I. -Wextra -pedantic -fsanitize=address
 
-NAME := flit
-TESTNAME := flittest
+LINKER   = gcc
+# linking flags here
+LFLAGS   = -Wall -I. -lm -fsanitize=address
 
-build:
-	$(CC) $(CFLAGS) main.c -o $(NAME)
+# change these to proper directories where each file should be
+SRCDIR   = src
+OBJDIR   = obj
+BINDIR   = bin
+INCDIR 	 = inc
 
-# remove executables and temporary files
+SOURCES  := $(wildcard $(SRCDIR)/*.c)
+INCLUDES := $(wildcard $(INCDIR)/*.h)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+rm       = rm -f
+
+$(BINDIR)/$(TARGET): $(OBJECTS)
+	@$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
+	@echo "Linking complete!"
+
+$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+.PHONY: clean
 clean:
-	rm -f *.gcda
-	rm -f *.gcno
-	rm -f *.gcov
-	rm -f $(NAME)
-	rm -f $(TESTNAME)
+	@$(rm) $(OBJECTS)
+	@echo "Cleanup complete!"
+
+.PHONY: remove
+remove: clean
+	@$(rm) $(BINDIR)/$(TARGET)
+	@echo "Executable removed!"

@@ -4,6 +4,8 @@
 #include <string.h>
 #include <argp.h>
 
+#include "inc/input.h"
+
 extern int errno;
 
 /**

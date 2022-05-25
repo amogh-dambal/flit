@@ -1,4 +1,4 @@
-#include "../include/input.h"
+#include "../inc/input.h"
 
 /**
  * @brief Helper function to print the args_t data structure. Helpful for 
