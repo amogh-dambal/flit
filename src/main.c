@@ -27,19 +27,23 @@ long fsize(FILE* fp) {
 
 
 int main(int argc, char** argv) {
-    if (argc < 2) {
-        fprintf(stderr, "Must provide a filename.\n");
-        exit(EXIT_FAILURE);
+    args_t args;
+    if (!parse_args(argc, argv, &args)) {
+        fprintf(stderr, "Unable to parse arguments.\n");
+        return EXIT_FAILURE;
+    }
+    if (!validate_args(&args)) {
+        fprintf(stderr, "Invalid arguments.\n");
+        return EXIT_FAILURE;
     }
 
-    char* fname = argv[1];
-    FILE* fp = fopen(fname, "r");
+    FILE* fp = fopen(args.fname, "r");
     if (!fp) {
         fprintf(stderr, "Unable to open file. Errno: %d\n Error: %s\n", errno, strerror(errno));
         exit(EXIT_FAILURE);
     }
 
-    printf("successfully opened file with name %s\n", fname);
+    printf("successfully opened file with name %s\n", args.fname);
 
     long sz = fsize(fp);
     if (sz == -1) {

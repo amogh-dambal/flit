@@ -44,6 +44,12 @@ bool parse_args(const int argc, char** argv, args_t* args) {
     int c;
 
     opterr = 0;
+    
+    // initialize args because arguments are optional
+    args->size = -1;
+    args->files = -1;
+    args->outdir = NULL;
+    args->fname = NULL;
     while ((c = getopt(argc, argv, "s:n:o:")) != -1) {
         switch (c) {
             case 's':
@@ -76,4 +82,35 @@ bool parse_args(const int argc, char** argv, args_t* args) {
     }
 
     return parseSuccess;
-} 
+}
+
+bool validate_filename(const char* filename) {
+    // TODO: implement actual filename validation logic
+    // when we figure out exactly what kinds of files we 
+    // can and cannot support
+    return true;
+}
+
+bool validate_size(const long size) {
+    // TODO: add more file size validation rules as we figure out split limits
+    return size != 0;
+}
+
+bool validate_files(const long files) {
+    // TODO: add more file number validation rules as we figure out 
+    // split limits. May want to cap the number of small files for 
+    // performance's sake. Definitely want to have 1B file size minimum.
+    return files != 0;
+}
+
+
+bool validate_args(const args_t* const args) {
+    // essentially a logical XOR, since either MUST be true. if both
+    // or neither are true then we have a problem
+    bool filesOrSize = (args->size == -1) != (args->files == -1);
+    return 
+        validate_filename(args->fname) &&
+        validate_size(args->size) &&
+        validate_files(args->files) &&
+        filesOrSize;
+}
