@@ -1,3 +1,5 @@
 language: C
 
-script: make
+script: 
+  - make remove
+  - make
