@@ -9,7 +9,7 @@
 TARGET   = flit
 CC       = gcc
 # compiling flags here
-CFLAGS   = -std=c17 -Wall -I. -Wextra -pedantic -fsanitize=address
+CFLAGS   = -std=c11 -Wall -I. -Wextra -pedantic -fsanitize=address
 
 LINKER   = gcc
 # linking flags here
