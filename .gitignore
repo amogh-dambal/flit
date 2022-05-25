@@ -1,6 +1,5 @@
 *.o
 *.out
-obj/
 .vscode/
 test/*.file
 docs/spec.md
