@@ -3,3 +3,4 @@
 .vscode/
 test/*.file
 docs/spec.md
+tmp/

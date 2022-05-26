@@ -136,7 +136,7 @@ bool split_file(split_t* s) {
 
     while (i < s->nfiles && !feof(s->in)) {
         size_t br = fread(data, s->buf, 1, s->in);
-        if (ferror(s->in) || br != s->buf) {
+        if (ferror(s->in) || br != 1) {
             fprintf(stderr, "File read error.\n");
             destroy_splitter(s);
             return false;
@@ -155,7 +155,7 @@ bool split_file(split_t* s) {
         }
 
         size_t bw = fwrite(data, s->buf, 1, s->fpa[i]);
-        if (ferror(s->in) || bw != s->buf) {
+        if (ferror(s->in) || bw != 1) {
             fprintf(stderr, "File write error.\n");
             destroy_splitter(s);
             return false;
