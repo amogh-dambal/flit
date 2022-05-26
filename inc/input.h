@@ -1,3 +1,7 @@
+#ifndef INPUT_H
+#define INPUT_H
+#pragma once
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -30,3 +34,5 @@ typedef struct argument_t {
 void print_args(const args_t* args);
 bool parse_args(const int argc, char** argv, args_t* args);
 bool validate_args(const args_t* const args);
+
+#endif

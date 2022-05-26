@@ -88,7 +88,7 @@ bool validate_filename(const char* filename) {
     // TODO: implement actual filename validation logic
     // when we figure out exactly what kinds of files we 
     // can and cannot support
-    return true;
+    return (filename != NULL);
 }
 
 bool validate_size(const long size) {

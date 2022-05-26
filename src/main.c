@@ -9,22 +9,7 @@
 
 extern int errno;
 
-/**
- * @brief Returns the size of the file 
- * pointed to by FP. On error, returns -1.
- * 
- * @param fp : pointer to the file 
- * @return long : size of the file in bytes
- */
 
-long fsize(FILE* fp) {
-    long sz = -1;
-    if (!fseek(fp, 0L, SEEK_END)) {
-        sz = ftell(fp);
-        rewind(fp);
-    }
-    return sz;
-}
 
 int main(int argc, char** argv) {
     args_t args;

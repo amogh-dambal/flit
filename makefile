@@ -50,10 +50,7 @@ TSOURCES 	:= $(wildcard $(TESTDIR)/*.c)
 TINCLUDES 	:= $(wildcard $(INCDIR)/*.h)
 TOBJECTS 	:= $(TSOURCES:$(TESTDIR)/%.c=$(OBJDIR)/%.o)
 
-.PHONY: test
-test:
-	$(TCC) $(TCFLAGS) -o $(BINDIR)/$(TTARGET) $(TESTDIR)/test-main.c
-	./$(BINDIR)/$(TTARGET)
+
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
 	@$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
@@ -73,3 +70,8 @@ remove: clean
 	@$(rm) $(BINDIR)/$(TARGET)
 	@$(rm) $(BINDIR)/$(TTARGET)
 	@echo "Executable removed!"
+
+.PHONY: test
+test:
+	$(TCC) $(TCFLAGS) -o $(BINDIR)/$(TTARGET) $(TESTDIR)/test-main.c
+	./$(BINDIR)/$(TTARGET)
