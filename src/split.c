@@ -119,7 +119,7 @@ bool init_splitter(const args_t* const args, split_t* s) {
         gen_hex_str(s->out, OUT_DIR_SIZE);
     }
 
-    if (!mkdir(s->out, 777)) {
+    if (mkdir(s->out, 777)) {
         fprintf(stderr, "Unable to open write directory.\n");
         free(s->fpa);
         free(s->out);
