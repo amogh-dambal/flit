@@ -133,13 +133,16 @@ bool init_splitter(const args_t* const args, split_t* s) {
 bool split_file(split_t* s) {
     char fnbuf[100];
     char data[s->buf];
+    printf("buffer size: %d\n", s->buf);
     int i = 0;
 
     errno = 0;
     while (i < s->nfiles && !feof(s->in)) {
         size_t br = fread(data, s->buf, 1, s->in);
-        if (ferror(s->in) || br != 1) {
+        if (ferror(s->in)) {
             fprintf(stderr, "File read error.\n");
+            
+            fprintf(stderr, "br: %d\n", br);
             destroy_splitter(s);
             return false;
         }
@@ -158,7 +161,7 @@ bool split_file(split_t* s) {
         }
 
         size_t bw = fwrite(data, s->buf, 1, s->fpa[i]);
-        if (ferror(s->in) || bw != 1) {
+        if (ferror(s->in)) {
             fprintf(stderr, "File write error.\n");
             destroy_splitter(s);
             return false;
@@ -175,7 +178,9 @@ bool split_file(split_t* s) {
         // and/or is unnecessary, i'll take it out
         memset(fnbuf, 0, 100);
         memset(data, 0, s->buf);
+        i++;
     }
+    return true;
 }
 bool destroy_splitter(split_t* s) {
     fclose(s->in);
