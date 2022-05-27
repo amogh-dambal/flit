@@ -1,6 +1,7 @@
 #include <sys/stat.h> // mkdir()
 #include <time.h>
 
+
 #include "../inc/split.h"
 /**
  * @brief Returns the size of the file 
@@ -53,8 +54,8 @@ void gen_hex_str(char* buf, size_t n) {
  * work.
  */
 bool gen_tmp_fname(char* fbuf, int i, const split_t* const s) {
-    int w = snprintf(fbuf, 100, "%s/part-%d.tmp", s->out, i);
-    return w < 0 && w > 100;
+    int w = snprintf(fbuf, 100, "%s/part-%d.spf", s->out, i);
+    return w > 0 && w < 100;
 }
 
 bool init_splitter(const args_t* const args, split_t* s) {
@@ -119,7 +120,7 @@ bool init_splitter(const args_t* const args, split_t* s) {
         gen_hex_str(s->out, OUT_DIR_SIZE);
     }
 
-    if (mkdir(s->out, 777)) {
+    if (mkdir(s->out, 0777)) {
         fprintf(stderr, "Unable to open write directory.\n");
         free(s->fpa);
         free(s->out);
@@ -134,6 +135,7 @@ bool split_file(split_t* s) {
     char data[s->buf];
     int i = 0;
 
+    errno = 0;
     while (i < s->nfiles && !feof(s->in)) {
         size_t br = fread(data, s->buf, 1, s->in);
         if (ferror(s->in) || br != 1) {
@@ -150,6 +152,7 @@ bool split_file(split_t* s) {
         s->fpa[i] = fopen(fnbuf, "a");
         if (!s->fpa[i]) {
             fprintf(stderr, "Unable to open temporary file %s\n.", fnbuf);
+            fprintf(stderr, "Errno: %d\n", errno);
             destroy_splitter(s);
             return false;
         }

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #include "input.h"
 
@@ -23,5 +24,7 @@ typedef struct file_splitter {
 bool init_splitter(const args_t* const args, split_t* s);
 bool split_file(split_t* s);
 bool destroy_splitter(split_t* s);
+
+extern int errno;
 
 #endif
